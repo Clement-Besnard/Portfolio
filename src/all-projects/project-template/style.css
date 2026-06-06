@@ -1,0 +1,26 @@
+.project-page { max-width: 960px; margin: 0 auto; padding: var(--space-16) var(--space-8); }
+
+.project-header { margin-bottom: var(--space-16); }
+.project-header h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: var(--space-4); }
+.project-desc { color: var(--color-text-muted); font-size: 1.1rem; margin-bottom: var(--space-8); }
+
+.project-links { display: flex; gap: var(--space-4); }
+
+.btn {
+  padding: 0.6rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  background: var(--color-primary);
+  color: white;
+  transition: background 180ms ease;
+}
+.btn:hover { background: var(--color-primary-hover); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+.btn-outline:hover { background: var(--color-primary); color: white; }
