@@ -1,17 +1,28 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --color-bg: #f7f6f2;
-  --color-surface: #f9f8f5;
-  --color-text: #28251d;
-  --color-text-muted: #7a7974;
-  --color-primary: #01696f;
-  --color-primary-hover: #0c4e54;
-  --color-border: #d4d1ca;
-  --font-body: 'Inter', sans-serif;
+  --color-bg: #0c0c0e;
+  --color-surface: #131316;
+  --color-surface-elevated: #1a1a1f;
+  --color-text: #e4e4e8;
+  --color-text-muted: #8e8e98;
+  --color-text-subtle: #5c5c66;
+  --color-primary: #e4e4e8;
+  --color-primary-hover: #ffffff;
+  --color-border: #232328;
+  --color-border-hover: #33333a;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --space-4: 1rem;
   --space-8: 2rem;
   --space-16: 4rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --transition: 180ms ease;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
@@ -20,11 +31,30 @@ body {
   color: var(--color-text);
   min-height: 100dvh;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.2 0.02 270 / 0.5), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, oklch(0.15 0.015 270 / 0.3), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+a {
+  color: inherit;
 }
 
 .loading {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: var(--space-16);
   color: var(--color-text-muted);
+  font-size: 0.9rem;
 }

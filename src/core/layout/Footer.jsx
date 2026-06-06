@@ -3,7 +3,7 @@ import './Footer.css'
 export default function Footer() {
   return (
     <footer className="footer">
-      <p>© {new Date().getFullYear()} — Mon Portfolio</p>
+      <p>Hub personnel — accès restreint</p>
     </footer>
   )
 }

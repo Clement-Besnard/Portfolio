@@ -1,0 +1,19 @@
+.google-login-button {
+  display: flex;
+  justify-content: center;
+}
+
+.google-login-missing {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.google-login-missing code {
+  font-size: 0.8rem;
+  background: var(--color-surface-elevated);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  color: var(--color-text);
+}

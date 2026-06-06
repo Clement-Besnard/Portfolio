@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
+import './NotFound.css'
 
 export default function NotFound() {
   return (
-    <main style={{ textAlign: 'center', padding: '4rem' }}>
-      <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>404</h1>
-      <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
-        Cette page n'existe pas.
-      </p>
-      <Link to="/" style={{ color: 'var(--color-primary)' }}>← Retour à l'accueil</Link>
+    <main className="not-found">
+      <p className="not-found-code">404</p>
+      <h1>Page introuvable</h1>
+      <p className="not-found-desc">Cette page n'existe pas ou a été déplacée.</p>
+      <Link to="/" className="not-found-link">← Retour au hub</Link>
     </main>
   )
 }
