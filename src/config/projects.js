@@ -6,4 +6,11 @@ export const PROJECTS = [
     tags: ['React', 'Vite'],
     private: true,
   },
+  {
+    slug: 'project-voice-cloning',
+    title: 'Voice Cloning Project',
+    description: 'Projet visant à implémenter du Voice Cloning.',
+    tags: ['React', 'Vite'],
+    private: true,
+  }
 ]

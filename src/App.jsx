@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 
 const ProjectTemplate = lazy(() => import('./all-projects/project-template'))
+const ProjectVoiceCloning = lazy(() => import('./all-projects/project-voice-cloning'))
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute />}>
             <Route path="/projects/project-template" element={<ProjectTemplate />} />
+            <Route path="/projects/project-voice-cloning" element={<ProjectVoiceCloning />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
