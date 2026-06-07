@@ -1,0 +1,21 @@
+services:
+  omnivoice-api:
+    build: ./src/all-projects/project-voice-cloning/server
+    container_name: omnivoice-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src/all-projects/project-voice-cloning/server:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=0
+      - PYTHONUNBUFFERED=1
+      - HF_TOKEN=${HF_TOKEN}
+    command: python app.py
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

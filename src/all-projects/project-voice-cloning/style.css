@@ -1,24 +1,25 @@
+/* ───────────────────────────────────────
+   Project page base
+─────────────────────────────────────── */
 .project-page {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
   padding: var(--space-16) var(--space-8);
 }
 
 .project-back {
   display: inline-block;
-  font-size: 0.85rem;
+  font-size: var(--text-sm, 0.875rem);
   color: var(--color-text-muted);
   text-decoration: none;
   margin-bottom: var(--space-8);
-  transition: color var(--transition);
+  transition: color var(--transition-interactive, 180ms ease);
 }
 
-.project-back:hover {
-  color: var(--color-text);
-}
+.project-back:hover { color: var(--color-text); }
 
 .project-header {
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-12);
   padding-bottom: var(--space-8);
   border-bottom: 1px solid var(--color-border);
 }
@@ -27,51 +28,270 @@
   font-size: clamp(1.6rem, 4vw, 2.25rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
 .project-desc {
   color: var(--color-text-muted);
   font-size: 1rem;
   line-height: 1.65;
-  margin-bottom: var(--space-8);
 }
 
-.project-links {
+/* ───────────────────────────────────────
+   Voice Cloning Form
+─────────────────────────────────────── */
+.vc-form {
   display: flex;
-  gap: var(--space-4);
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-8);
 }
 
-.btn {
-  padding: 0.55rem 1.1rem;
-  border-radius: var(--radius-md);
-  font-size: 0.85rem;
+.vc-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.vc-step-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.875rem;
   font-weight: 500;
-  text-decoration: none;
-  background: var(--color-text);
-  color: var(--color-bg);
-  transition: opacity var(--transition);
-}
-
-.btn:hover {
-  opacity: 0.85;
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
-}
-
-.btn-outline:hover {
   color: var(--color-text);
-  border-color: var(--color-border-hover);
-  opacity: 1;
 }
 
-.project-content {
+.vc-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary, #01696f);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Drop zone */
+.vc-dropzone {
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease;
+  background: var(--color-surface, #f9f8f5);
+  position: relative;
+}
+
+.vc-dropzone:hover,
+.vc-dropzone--active {
+  border-color: var(--color-primary, #01696f);
+  background: color-mix(in oklch, var(--color-primary, #01696f) 5%, var(--color-surface, #f9f8f5));
+}
+
+.vc-dropzone--filled {
+  border-style: solid;
+  border-color: var(--color-border);
+  padding: var(--space-4) var(--space-6);
+}
+
+.vc-file-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.vc-dropzone-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
   color: var(--color-text-muted);
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.vc-dropzone-hint svg { color: var(--color-text-faint, #bab9b4); }
+.vc-dropzone-hint strong { color: var(--color-text); }
+
+/* File info row */
+.vc-file-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+.vc-filename {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.vc-filesize {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.vc-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  padding: 0 var(--space-1);
+  transition: color 150ms ease;
+}
+
+.vc-remove:hover { color: var(--color-error, #a12c7b); }
+
+/* Audio preview */
+.vc-audio-preview { margin-top: var(--space-2); }
+
+.vc-audio-preview audio {
+  width: 100%;
+  height: 36px;
+  border-radius: var(--radius-md, 0.5rem);
+  accent-color: var(--color-primary, #01696f);
+}
+
+/* Textarea */
+.vc-textarea {
+  width: 100%;
+  padding: var(--space-4);
+  background: var(--color-surface, #f9f8f5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  resize: vertical;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  font-family: inherit;
+}
+
+.vc-textarea::placeholder { color: var(--color-text-faint, #bab9b4); }
+
+.vc-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #01696f);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary, #01696f) 18%, transparent);
+}
+
+.vc-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-faint, #bab9b4);
+  margin-top: calc(var(--space-1) * -1);
+}
+
+/* Error */
+.vc-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in oklch, var(--color-error, #a12c7b) 8%, var(--color-surface, #f9f8f5));
+  border: 1px solid color-mix(in oklch, var(--color-error, #a12c7b) 25%, transparent);
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 0.875rem;
+  color: var(--color-error, #a12c7b);
+}
+
+/* Submit */
+.vc-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.65rem 1.5rem;
+  background: var(--color-primary, #01696f);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 180ms ease, opacity 180ms ease;
+  align-self: flex-start;
+}
+
+.vc-submit:hover:not(:disabled) { background: var(--color-primary-hover, #0c4e54); }
+.vc-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Spinner */
+@keyframes vc-spin { to { transform: rotate(360deg); } }
+
+.vc-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: vc-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ───────────────────────────────────────
+   Output section
+─────────────────────────────────────── */
+.vc-output {
+  margin-top: var(--space-10);
+  padding: var(--space-6);
+  background: var(--color-surface, #f9f8f5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.vc-output-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-success, #437a22);
+}
+
+.vc-output-audio {
+  width: 100%;
+  accent-color: var(--color-primary, #01696f);
+}
+
+.vc-download {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 0.375rem);
+  align-self: flex-start;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.vc-download:hover {
+  color: var(--color-text);
+  border-color: color-mix(in oklch, var(--color-text) 40%, transparent);
+}
+
+/* ───────────────────────────────────────
+   Responsive
+─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .project-page { padding: var(--space-8) var(--space-4); }
+  .vc-submit { width: 100%; }
 }

@@ -1,0 +1,6 @@
+flask
+flask-cors
+soundfile
+torch
+omnivoice
+flask-cors
