@@ -19,3 +19,17 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+
+  portfolio-website:
+    build: .
+    container_name: portfolio-website
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host 0.0.0.0
+    depends_on:
+      - omnivoice-api
