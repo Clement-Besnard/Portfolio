@@ -3,4 +3,4 @@ flask-cors
 soundfile
 torch
 omnivoice
-flask-cors
+faster-whisper

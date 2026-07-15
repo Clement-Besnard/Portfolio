@@ -1,4 +1,5 @@
 from flask import Flask, request, send_file, jsonify
+from faster_whisper import WhisperModel
 from flask_cors import CORS
 from omnivoice import OmniVoice
 import soundfile as sf
@@ -16,12 +17,46 @@ CORS(
 )
 
 print("Chargement du modèle OmniVoice...")
-model = OmniVoice.from_pretrained(
+omnivoice_model = OmniVoice.from_pretrained(
     "k2-fsa/OmniVoice",
     device_map="cpu",
     dtype=torch.float32
 )
 print("Modèle prêt.")
+
+print("Chargement du modèle Faster Whisper...")
+whisper_model = WhisperModel("small", device="cpu", compute_type="int8")
+print("Modèle prêt.")
+
+
+@app.route("/api/stt", methods=["POST"])
+def stt():
+    if "audio" not in request.files:
+        return jsonify({"message": "Champ 'audio' manquant."}), 400
+
+    audio_file = request.files["audio"]
+
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_in:
+        audio_file.save(tmp_in.name)
+        audio_path = tmp_in.name
+
+    try:
+        # language=None => détection automatique de la langue
+        segments, info = whisper_model.transcribe(audio_path)
+        transcript = " ".join(segment.text.strip() for segment in segments).strip()
+
+        return jsonify({
+            "transcript": transcript,
+            "language": info.language,
+        })
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+    finally:
+        if os.path.exists(audio_path):
+            os.unlink(audio_path)
+
 
 @app.route("/api/clone", methods=["POST"])
 def clone():
@@ -46,7 +81,7 @@ def clone():
     out_path = tempfile.mktemp(suffix=".wav")
 
     try:
-        audio = model.generate(
+        audio = omnivoice_model.generate(
             ref_audio=ref_audio_path,
             text=target_text,
             ref_text=ref_text,

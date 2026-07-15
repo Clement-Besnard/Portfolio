@@ -10,6 +10,7 @@ export default function VoiceCloningProject() {
   const [transcript, setTranscript] = useState('')
   const [targetText, setTargetText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isTranscribing, setIsTranscribing] = useState(false)
   const [outputAudio, setOutputAudio] = useState(null)
   const [error, setError] = useState(null)
   const [dragOver, setDragOver] = useState(false)
@@ -25,6 +26,35 @@ export default function VoiceCloningProject() {
   const resetOutput = () => {
     if (outputAudio) URL.revokeObjectURL(outputAudio)
     setOutputAudio(null)
+  }
+
+  const transcribe = async (file) => {
+    setIsTranscribing(true)
+    setTranscript('')
+
+    try {
+      const formData = new FormData()
+      formData.append('audio', file)
+
+      const res = await fetch(`${API_BASE_URL}/api/stt`, {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}))
+        throw new Error(json.message || `Erreur ${res.status}`)
+      }
+
+      const json = await res.json()
+      setTranscript(json.transcript ?? '')
+    } catch (err) {
+      setError(
+        `Transcription automatique impossible (${err.message}). Tu peux saisir le transcript à la main.`
+      )
+    } finally {
+      setIsTranscribing(false)
+    }
   }
 
   const handleFile = (file) => {
@@ -47,6 +77,7 @@ export default function VoiceCloningProject() {
 
     setAudioFile(file)
     setAudioURL(URL.createObjectURL(file))
+    transcribe(file)
   }
 
   const handleDrop = (e) => {
@@ -60,6 +91,7 @@ export default function VoiceCloningProject() {
     if (audioURL) URL.revokeObjectURL(audioURL)
     setAudioFile(null)
     setAudioURL(null)
+    setTranscript('')
     resetOutput()
   }
 
@@ -112,7 +144,8 @@ export default function VoiceCloningProject() {
     !!audioFile &&
     !!transcript.trim() &&
     !!targetText.trim() &&
-    !isLoading
+    !isLoading &&
+    !isTranscribing
 
   return (
     <main className="project-page">
@@ -204,20 +237,32 @@ export default function VoiceCloningProject() {
         <div className="vc-step">
           <div className="vc-step-label">
             <span className="vc-step-num">2</span>
-            <span>Transcript du fichier audio</span>
+            <span>Transcript de l’audio</span>
+            {isTranscribing && (
+              <span className="vc-transcribing">
+                <span className="vc-spinner" aria-hidden="true" />
+                Transcription en cours…
+              </span>
+            )}
           </div>
 
           <textarea
             className="vc-textarea"
-            placeholder="Ce que dit la voix dans le fichier WAV…"
+            placeholder={
+              isTranscribing
+                ? 'Transcription automatique en cours…'
+                : 'Rempli automatiquement après l’ajout du WAV — modifiable si besoin.'
+            }
             value={transcript}
             onChange={(e) => setTranscript(e.target.value)}
             rows={4}
+            disabled={isTranscribing}
             aria-label="Transcript de l'audio de référence"
           />
 
           <p className="vc-hint">
-            Pour l’instant, ce champ est manuel et correspond à <code>ref_text</code> côté backend.
+            Généré par reconnaissance vocale (Whisper). Corrige-le si la transcription
+            comporte des erreurs.
           </p>
         </div>
 
