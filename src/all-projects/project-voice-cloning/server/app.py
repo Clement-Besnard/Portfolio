@@ -8,15 +8,17 @@ import os
 
 app = Flask(__name__)
 
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
+
 CORS(
     app,
-    resources={r"/api/*": {"origins": ["http://localhost:5173"]}}
+    resources={r"/api/*": {"origins": [FRONTEND_ORIGIN]}}
 )
 
 print("Chargement du modèle OmniVoice...")
 model = OmniVoice.from_pretrained(
     "k2-fsa/OmniVoice",
-    device_map="cuda:0",
+    device_map="cpu",
     dtype=torch.float32
 )
 print("Modèle prêt.")
@@ -66,4 +68,5 @@ def clone():
             os.unlink(ref_audio_path)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    port = int(os.getenv("PORT", "5000"))
+    app.run(host="0.0.0.0", port=port, debug=False)

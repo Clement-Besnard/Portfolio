@@ -3,7 +3,7 @@ services:
     build: ./src/all-projects/project-voice-cloning/server
     container_name: omnivoice-api
     ports:
-      - "5000:5000"
+      - "${API_HOST_PORT}:${API_INTERNAL_PORT}"
     volumes:
       - ./src/all-projects/project-voice-cloning/server:/app
     environment:
@@ -11,20 +11,16 @@ services:
       - FLASK_DEBUG=0
       - PYTHONUNBUFFERED=1
       - HF_TOKEN=${HF_TOKEN}
+      - PORT=${API_INTERNAL_PORT}
+      - FRONTEND_ORIGIN=http://localhost:${FRONTEND_PORT}
     command: python app.py
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    restart: unless-stopped
 
   portfolio-website:
     build: .
     container_name: portfolio-website
     ports:
-      - "5173:5173"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     volumes:
       - .:/app
       - /app/node_modules
@@ -33,3 +29,4 @@ services:
     command: npm run dev -- --host 0.0.0.0
     depends_on:
       - omnivoice-api
+    restart: unless-stopped

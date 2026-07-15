@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './style.css'
 
-const API_BASE_URL = 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5172'
 
 export default function VoiceCloningProject() {
   const [audioFile, setAudioFile] = useState(null)
