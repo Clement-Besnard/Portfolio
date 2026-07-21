@@ -155,6 +155,67 @@
 
 .vc-remove:hover { color: var(--color-error, #a12c7b); }
 
+/* Record (mic) */
+.vc-record-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-subtle);
+  font-size: 0.78rem;
+}
+
+.vc-record-divider::before,
+.vc-record-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.vc-record-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  align-self: center;
+  padding: 0.6rem 1.25rem;
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.vc-record-btn:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface);
+}
+
+.vc-record-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.vc-record-btn--recording {
+  border-color: color-mix(in oklch, #e5484d 50%, transparent);
+  color: #e5484d;
+}
+
+.vc-record-btn--recording:hover { background: color-mix(in oklch, #e5484d 10%, transparent); }
+
+.vc-record-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #e5484d;
+  animation: vc-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes vc-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
 /* Audio preview */
 .vc-audio-preview { margin-top: var(--space-2); }
 
