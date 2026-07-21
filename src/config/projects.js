@@ -10,7 +10,14 @@ export const PROJECTS = [
     slug: 'project-voice-cloning',
     title: 'Voice Cloning Project',
     description: 'Projet visant à implémenter du Voice Cloning.',
-    tags: ['React', 'Vite'],
+    tags: ['Omnivoice', 'STT-Whisper', 'Python Flask'],
+    private: true,
+  },
+  {
+    slug: 'project-scouts',
+    title: 'Scouts Project',
+    description: 'Instances parallèles scrutant divers sites web.',
+    tags: ['Python Flask', 'Web Scraping'],
     private: true,
   }
 ]
