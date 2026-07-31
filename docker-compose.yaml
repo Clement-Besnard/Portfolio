@@ -25,6 +25,21 @@ services:
               count: all
               capabilities: [gpu]
 
+  scouts-api:
+    build: ./src/all-projects/project-scouts/server
+    container_name: scouts-api
+    ports:
+      - "${SCOUTS_HOST_PORT}:${API_INTERNAL_PORT}"
+    volumes:
+      - ./src/all-projects/project-scouts/server:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=${API_INTERNAL_PORT}
+      - POLL_INTERVAL=${SCOUTS_POLL_INTERVAL}
+      - FRONTEND_ORIGIN=http://localhost:${FRONTEND_PORT}
+    command: python scouts.py
+    restart: unless-stopped
+
   portfolio-website:
     build: .
     container_name: portfolio-website
@@ -38,4 +53,5 @@ services:
     command: npm run dev -- --host 0.0.0.0
     depends_on:
       - omnivoice-api
+      - scouts-api
     restart: unless-stopped
