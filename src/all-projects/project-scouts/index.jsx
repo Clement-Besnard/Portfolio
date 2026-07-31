@@ -31,6 +31,9 @@ export default function ScoutsProject() {
     Object.fromEntries(SCOUTS.map((scout) => [scout.id, INITIAL_STATE]))
   )
   const [autoRefresh, setAutoRefresh] = useState(true)
+  // Horodatage (côté front) de la dernière synchro réussie avec un scout.
+  // Sert à montrer que le polling tourne, même quand la donnée serveur ne bouge pas.
+  const [lastSync, setLastSync] = useState(null)
   // Force un re-render périodique pour que les « il y a X » restent justes
   const [, setTick] = useState(0)
   const mountedRef = useRef(true)
@@ -66,6 +69,8 @@ export default function ScoutsProject() {
           message: `Scout injoignable (${err.message})`,
           reachable: false,
         })
+      } finally {
+        if (mountedRef.current) setLastSync(Date.now())
       }
     },
     [patch]
@@ -152,6 +157,13 @@ export default function ScoutsProject() {
         </div>
 
         <div className="sc-toolbar-actions">
+          {autoRefresh && (
+            <span className="sc-sync" title="Le tableau de bord interroge les scouts en continu">
+              <span className="sc-sync-dot" aria-hidden="true" />
+              Synchro {formatAgo(lastSync)}
+            </span>
+          )}
+
           <label className="sc-toggle">
             <input
               type="checkbox"

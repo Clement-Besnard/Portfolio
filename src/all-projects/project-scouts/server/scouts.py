@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
-POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "300"))  # secondes entre deux vérifications
+POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "60"))  # secondes entre deux scrapings
 HISTORY_SIZE = 20
 
 CORS(
