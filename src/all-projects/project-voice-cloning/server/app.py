@@ -16,16 +16,23 @@ CORS(
     resources={r"/api/*": {"origins": [FRONTEND_ORIGIN]}}
 )
 
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Périphérique utilisé : {DEVICE}")
+
 print("Chargement du modèle OmniVoice...")
 omnivoice_model = OmniVoice.from_pretrained(
     "k2-fsa/OmniVoice",
-    device_map="cpu",
-    dtype=torch.float32
+    device_map=DEVICE,
+    dtype=torch.float16 if DEVICE == "cuda" else torch.float32
 )
 print("Modèle prêt.")
 
 print("Chargement du modèle Faster Whisper...")
-whisper_model = WhisperModel("small", device="cpu", compute_type="int8")
+whisper_model = WhisperModel(
+    "small",
+    device=DEVICE,
+    compute_type="float16" if DEVICE == "cuda" else "int8"
+)
 print("Modèle prêt.")
 
 

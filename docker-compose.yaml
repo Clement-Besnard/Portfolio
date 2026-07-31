@@ -13,8 +13,17 @@ services:
       - HF_TOKEN=${HF_TOKEN}
       - PORT=${API_INTERNAL_PORT}
       - FRONTEND_ORIGIN=http://localhost:${FRONTEND_PORT}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     command: python app.py
     restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   portfolio-website:
     build: .
