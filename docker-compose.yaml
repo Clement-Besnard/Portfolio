@@ -1,5 +1,7 @@
 services:
   omnivoice-api:
+    # Démarre uniquement si VITE_PROJECT_VOICE_CLONING_ENABLED=true (cf. COMPOSE_PROFILES)
+    profiles: ["${VITE_PROJECT_VOICE_CLONING_ENABLED:-false}"]
     build: ./src/all-projects/project-voice-cloning/server
     container_name: omnivoice-api
     ports:
@@ -26,6 +28,8 @@ services:
               capabilities: [gpu]
 
   scouts-api:
+    # Démarre uniquement si VITE_PROJECT_SCOUTS_ENABLED=true (cf. COMPOSE_PROFILES)
+    profiles: ["${VITE_PROJECT_SCOUTS_ENABLED:-false}"]
     build: ./src/all-projects/project-scouts/server
     container_name: scouts-api
     ports:
@@ -51,7 +55,6 @@ services:
     environment:
       - NODE_ENV=development
     command: npm run dev -- --host 0.0.0.0
-    depends_on:
-      - omnivoice-api
-      - scouts-api
+    # Pas de depends_on sur les API : elles peuvent être désactivées via le .env,
+    # et le serveur de dev Vite n'a pas besoin d'elles pour démarrer.
     restart: unless-stopped

@@ -6,10 +6,13 @@ import PrivateRoute from './core/auth/PrivateRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
+import { PROJECTS } from './config/projects'
 
-const ProjectTemplate = lazy(() => import('./all-projects/project-template'))
-const ProjectVoiceCloning = lazy(() => import('./all-projects/project-voice-cloning'))
-const ProjectScouts = lazy(() => import('./all-projects/project-scouts'))
+const PROJECT_PAGES = {
+  'project-template': lazy(() => import('./all-projects/project-template')),
+  'project-voice-cloning': lazy(() => import('./all-projects/project-voice-cloning')),
+  'project-scouts': lazy(() => import('./all-projects/project-scouts')),
+}
 
 export default function App() {
   return (
@@ -20,9 +23,20 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/projects/project-template" element={<ProjectTemplate />} />
-            <Route path="/projects/project-voice-cloning" element={<ProjectVoiceCloning />} />
-            <Route path="/projects/project-scouts" element={<ProjectScouts />} />
+            {/* Les projets désactivés dans le .env n'ont pas de route :
+                leur URL retombe sur la page 404. */}
+            {PROJECTS.filter((project) => project.enabled).map((project) => {
+              const ProjectPage = PROJECT_PAGES[project.slug]
+              if (!ProjectPage) return null
+
+              return (
+                <Route
+                  key={project.slug}
+                  path={`/projects/${project.slug}`}
+                  element={<ProjectPage />}
+                />
+              )
+            })}
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

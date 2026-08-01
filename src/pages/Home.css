@@ -94,6 +94,11 @@
   cursor: default;
 }
 
+.project-card--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .project-card-top {
   display: flex;
   align-items: flex-start;
@@ -152,4 +157,11 @@
 
 .project-login-link:hover {
   color: var(--color-text);
+}
+
+.project-disabled-note {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
 }

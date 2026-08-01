@@ -28,18 +28,27 @@ export default function Home() {
 
         <div className="projects-grid">
           {PROJECTS.map((project) => {
-            const isLocked = project.private && !user
+            // Projet coupé via le .env : cadenas, quel que soit l'utilisateur.
+            const isDisabled = !project.enabled
+            const isLocked = isDisabled || (project.private && !user)
             const CardWrapper = isLocked ? 'div' : Link
             const cardProps = isLocked
-              ? { className: 'project-card project-card--locked' }
+              ? {
+                  className: `project-card project-card--locked${
+                    isDisabled ? ' project-card--disabled' : ''
+                  }`,
+                }
               : { to: `/projects/${project.slug}`, className: 'project-card' }
 
             return (
               <CardWrapper key={project.slug} {...cardProps}>
                 <div className="project-card-top">
                   <h3>{project.title}</h3>
-                  {project.private && (
-                    <span className="project-badge" title="Projet privé">
+                  {(project.private || isDisabled) && (
+                    <span
+                      className="project-badge"
+                      title={isDisabled ? 'Projet désactivé' : 'Projet privé'}
+                    >
                       {isLocked ? (
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -60,10 +69,14 @@ export default function Home() {
                     <span key={tag} className="tag">{tag}</span>
                   ))}
                 </div>
-                {isLocked && (
-                  <Link to="/login" className="project-login-link">
-                    Se connecter pour accéder →
-                  </Link>
+                {isDisabled ? (
+                  <span className="project-disabled-note">Projet désactivé</span>
+                ) : (
+                  isLocked && (
+                    <Link to="/login" className="project-login-link">
+                      Se connecter pour accéder →
+                    </Link>
+                  )
                 )}
               </CardWrapper>
             )
